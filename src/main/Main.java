@@ -2,7 +2,6 @@ package main;
 
 import decryption.AESDecryption;
 import encryption.AESEncrypt;
-import java.util.Scanner;
 
 public class Main {
 
@@ -13,7 +12,14 @@ public class Main {
         System.out.println(args[1]);
         System.out.println("Salt value (Atleast 16 bytes long)");
         System.out.println(args[2]);
+        long startTime = System.currentTimeMillis();
         encryptDecrypt(args[0], args[1], args[2]);
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Start Time: " + startTime);
+        System.out.println("End Time: " + endTime);
+        System.out.println("Duration: " + duration + " milliseconds");
+
     }
 
     private static void encryptDecrypt(String originalString, String secretKey, String salt) {
@@ -24,17 +30,16 @@ public class Main {
             AESDecryption aesDecryption = new AESDecryption(encryptedText, secretKey, salt);
             String decryptedText = aesDecryption.decrypt(encryptedText, secretKey, salt); //Decrypted text or original plain text
             int keyLength = lengthOfKey(secretKey);
-            System.out.println("Encrypted text with secretKey of "+ keyLength + "bits " + encryptedText);
-            System.out.println("Decrypted text with secretKey of " + keyLength + "bits " + decryptedText);
+            System.out.println("Encrypted text with secretKey of "+ keyLength + " bits " + encryptedText);
+            System.out.println("Decrypted text with secretKey of " + keyLength + " bits " + decryptedText);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
         }
     }
 
     private static int lengthOfKey(String secretKey) {
         int lengthInCharacters = secretKey.length(); // Get the number of characters in the string
-        int bits = lengthInCharacters * 8;
-        return bits;
+        return lengthInCharacters * 8;
     }
 
 
